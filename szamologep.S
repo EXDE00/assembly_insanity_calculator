@@ -32,42 +32,46 @@ calculator:
 	#cdecl konvecnio| ebx mentese
 	# 1. argumentum: [ebp + 4*2] => lhs
 	# 2. argumentum: [ebp + 4*3] => rhs
-	# 3. argumentum: [ebp + 4*4] => op[]
-	
-	#"valtozok"	
+	# 3. argumentum: [ebp + 4*4] => op[]	
 
 	mov eax, [ebp + 4*4] #should be op[]
 
+	/*
 	#print that shit
-	mov dword ptr [eax], edx
-	push edx
+	#mov eax, edx
+	push eax
 	push offset hex_printer
 	#push offset new_line_epic
 	call printf
 	push offset new_line_epic
 	call printf
-	pop edx
+	#pop edx
+	pop eax
+	pop eax
 	pop eax	
+	*/
 
-	cmp byte ptr [eax], 0x0000002B
+	cmp byte ptr [eax], 0x2B
 	je sum
-	cmp eax, 0x0000002D
+	cmp byte ptr [eax], 0x2D
 	je sub
-	cmp eax, 0x00003C3C
+	cmp word ptr [eax], 0x3C3C
 	je roll_left
-	cmp eax, 0x00003E3E
+	cmp word ptr [eax], 0x3E3E
 	je roll_right
 	jne bad_input 
 
 	
-	#print that shit
+	/*
+	#print
 	push eax
 	#push offset new_line_epic
 	call printf
 	push offset new_line_epic
 	call printf
+	pop eax
 	pop eax	
-		
+	*/	
 
 	#fuggveny epilogus: start
 	mov esp, ebp
@@ -75,44 +79,69 @@ calculator:
 	#fuggveny epilogus: kill
 	ret
 
-sum:			
+sum:
+	/*			
 	push offset sum_run
 	call printf
+	pop eax
+	*/
+
+	mov eax, [ebp + 4*2]
+	adc eax, [ebp + 4*3]
 	
 	mov esp, ebp
 	pop ebp
 	ret
 sub:
+	/*
 	push offset sub_run
 	call printf
+	pop eax
+	*/
+
+	mov eax, [ebp + 4*2]
+	sbb eax, [ebp + 4*3]
 
 	mov esp, ebp
 	pop ebp
 	ret
 roll_left:
+	/*
 	push offset left_run
 	call printf
-	pop ebx
-	mov eax, -1
+	pop eax
+	*/
+
+	mov eax, [ebp + 4*2]
+	mov cl, [ebp + 4*3]
+	shl eax, cl
 
 	mov esp, ebp
 	pop ebp
 	ret
 roll_right:
+	/*
 	push offset right_run
 	call printf
-	pop ebx
-	mov eax, -1
+	pop eax
+	*/
+	
+	mov eax, [ebp + 4*2]
+	mov cl, [ebp + 4*3]
+	shr eax, cl
 
 	mov esp, ebp
 	pop ebp
 	ret
 bad_input:
+	/*
 	push offset bad_input_text
 	call printf
-	/*pop ebx
+	pop ebx
 	mov eax, -1
+	pop eax
 	*/
+	
 	xor eax, eax
 	mov eax, -1
 
@@ -122,9 +151,11 @@ bad_input:
 	
 
 
-	/*	#get data out of register
+	/*
+	#get data out of register
 	#compare if it's + - << or >> 
 	#jump according to str
 	#if none true just call some alt ending 
-	#if all good return the goodies */
+	#if all good return the goodies 
+	*/
 	
