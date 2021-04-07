@@ -1,6 +1,7 @@
 .intel_syntax noprefix
 
 .section .data
+/*
 hex_printer:
 	.asciz "0x%x\n"
 integer_printer:
@@ -17,7 +18,7 @@ left_run:
 	.asciz "left run\n"
 bad_input_text:
 	.asciz "bad input\n"
-
+*/
 
 .section .text
 .global calculator
@@ -37,7 +38,7 @@ calculator:
 	mov eax, [ebp + 4*4] #should be op[]
 
 	/*
-	#print that shit
+	#print
 	#mov eax, edx
 	push eax
 	push offset hex_printer
