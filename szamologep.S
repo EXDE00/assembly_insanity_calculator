@@ -56,6 +56,8 @@ calculator:
 	je sum
 	cmp byte ptr [eax], 0x2D
 	je sub
+	cmp byte ptr [eax], 0x2A
+	je mule
 	cmp word ptr [eax], 0x3C3C
 	je roll_left
 	cmp word ptr [eax], 0x3E3E
@@ -102,6 +104,13 @@ sub:
 
 	mov eax, [ebp + 4*2]
 	sbb eax, [ebp + 4*3]
+
+	mov esp, ebp
+	pop ebp
+	ret
+mule:
+	mov eax, [ebp + 4*2]
+	imul eax, [ebp + 4*3] 
 
 	mov esp, ebp
 	pop ebp
